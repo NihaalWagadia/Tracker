@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "824714184719",
+    "firebase_url": "https://tracker-e2b73.firebaseio.com",
+    "project_id": "tracker-e2b73",
+    "storage_bucket": "tracker-e2b73.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824714184719:android:3d901349f5b4662a",
+        "android_client_info": {
+          "package_name": "com.example.nihaal.tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824714184719-4gbl1r9e5ncndqshidhhn9ec2ijt1stg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nihaal.tracker",
+            "certificate_hash": "c1c8fa1e5fb330d4613a6f4fd9ef553253dbcfdf"
+          }
+        },
+        {
+          "client_id": "824714184719-9gpboibs1dq0mq89jqcf2910uk7drffv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG2WD0Jt3hOk8HamZE9wUqpdxTfdWLHnw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824714184719-9gpboibs1dq0mq89jqcf2910uk7drffv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
