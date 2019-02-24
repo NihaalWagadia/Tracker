@@ -78,7 +78,7 @@ public class InviteCodeActivity extends AppCompatActivity {
                                                 progressDialog.dismiss();
                                                 Toast.makeText(getApplicationContext(), "Successfully registered", Toast.LENGTH_SHORT).show();
                                                 finish();
-                                                Intent intent = new Intent(InviteCodeActivity.this, MyNavigationActivity.class);
+                                                Intent intent = new Intent(InviteCodeActivity.this, UserLocationMainActivity.class);
                                                 startActivity(intent);
                                             }
                                             else {
