@@ -22,9 +22,6 @@
             android:id="@+id/nav_joinedCircle"
             android:title="Joined Circle" />
 
-        <item
-            android:id="@+id/nav_inviteMembers"
-            android:title="Invite Members" />
 
         <item
             android:id="@+id/nav_shareLoc"

@@ -17,6 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +33,7 @@ public class InviteCodeActivity extends AppCompatActivity {
     FirebaseUser user;
     DatabaseReference reference;
     String userId;
+    StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,8 @@ public class InviteCodeActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         Intent myIntent = getIntent();
         reference = FirebaseDatabase.getInstance().getReference().child("Users");
+        storageReference = FirebaseStorage.getInstance().getReference().child("User_images");
+
         if (myIntent != null) {
             name = myIntent.getStringExtra("name");
             isSharing = myIntent.getStringExtra("isSharing");
@@ -65,7 +71,9 @@ public class InviteCodeActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //insert values in Real time database
-                            CreateUser createUser = new CreateUser(name,email,password,code,"false","na","na","na");
+                            user = auth.getCurrentUser();
+
+                            CreateUser createUser = new CreateUser(name, email, password, code, "false", "na", "na", "na", user.getUid());
 
                             user = auth.getCurrentUser();
                             userId = user.getUid();
@@ -75,13 +83,40 @@ public class InviteCodeActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                progressDialog.dismiss();
-                                                Toast.makeText(getApplicationContext(), "Successfully registered", Toast.LENGTH_SHORT).show();
-                                                finish();
-                                                Intent intent = new Intent(InviteCodeActivity.this, UserLocationMainActivity.class);
-                                                startActivity(intent);
-                                            }
-                                            else {
+                                                //Save image to firebase storage
+                                                StorageReference sr = storageReference.child(user.getUid() + ".jpg");
+                                                sr.putFile(imageUri)
+                                                        .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    String download_image_path = task.getResult().toString();
+                                                                    reference.child(user.getUid()).child("imageUrl").setValue(download_image_path)
+                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                    if (task.isSuccessful()) {
+                                                                                        progressDialog.dismiss();
+                                                                                    //    Toast.makeText(getApplicationContext(), "Succcccccccc", Toast.LENGTH_SHORT).show();
+                                                                                        sendVerificationEmail();
+
+                                                                                        Intent i = new Intent(InviteCodeActivity.this, MainActivity.class);
+                                                                                        startActivity(i);
+
+                                                                                    } else {
+                                                                                        progressDialog.dismiss();
+                                                                                        Toast.makeText(getApplicationContext(), "Error occured", Toast.LENGTH_SHORT).show();
+                                                                                    }
+                                                                                }
+                                                                            });
+
+
+                                                                }
+                                                            }
+                                                        });
+
+
+                                            } else {
                                                 progressDialog.dismiss();
                                                 Toast.makeText(getApplicationContext(), "Kat gaya tera", Toast.LENGTH_SHORT).show();
 
@@ -93,4 +128,26 @@ public class InviteCodeActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    public void sendVerificationEmail() {
+
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Email sent for verification", Toast.LENGTH_SHORT).show();
+                            finish();
+                            auth.signOut();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(),"Could not send email",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 }
+
+
+
+

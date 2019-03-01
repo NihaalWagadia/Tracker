@@ -28,6 +28,12 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +45,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class UserLocationMainActivity extends AppCompatActivity
@@ -51,6 +59,15 @@ public class UserLocationMainActivity extends AppCompatActivity
     GoogleApiClient client;
     LocationRequest request;
     LatLng latLng;
+    DatabaseReference databaseReference;
+    FirebaseUser user;
+    String current_user_email;
+    String current_user_name;
+    String current_user_imageUrl;
+    TextView t1_currentName ,t2_currentEmail;
+    ImageView iv;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +76,7 @@ public class UserLocationMainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         auth = (FirebaseAuth) FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
+        user =auth.getCurrentUser();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -73,6 +91,33 @@ public class UserLocationMainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View header = navigationView.getHeaderView(0);
+        t1_currentName = header.findViewById(R.id.title_text);
+        t2_currentEmail = header.findViewById(R.id.email_text);
+        iv = header.findViewById(R.id.imageView);
+
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                current_user_name = dataSnapshot.child(user.getUid()).child("name").getValue(String.class);
+                current_user_email = dataSnapshot.child(user.getUid()).child("email").getValue(String.class);
+                current_user_imageUrl = dataSnapshot.child(user.getUid()).child("imageUrl").getValue(String.class);
+
+                t1_currentName.setText(current_user_name);
+                t2_currentEmail.setText(current_user_email);
+                Picasso.get().load(current_user_imageUrl).into(iv);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
@@ -130,11 +175,17 @@ public class UserLocationMainActivity extends AppCompatActivity
 
         if (id == R.id.nav_joinCircle) {
             // Handle the camera action
+            Intent intent = new Intent(UserLocationMainActivity.this, JoinCircleActivity.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_joinedCircle) {
 
-        } else if (id == R.id.nav_inviteMembers) {
-
         } else if (id == R.id.nav_shareLoc) {
+
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_TEXT, "My location is : "+"https://www.google.com/maps/@"+latLng.latitude+","+latLng.longitude+",17z");
+            startActivity(i.createChooser(i,"Share using: "));
 
         } else if (id == R.id.nav_signOut) {
             FirebaseUser user = auth.getCurrentUser();
@@ -147,6 +198,9 @@ public class UserLocationMainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_myCircle) {
+
+            Intent intent = new Intent(UserLocationMainActivity.this, MyCircleActivity.class);
+            startActivity(intent);
 
         }
 
