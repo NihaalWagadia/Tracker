@@ -9,7 +9,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recycleview">
+        android:id="@+id/all_friends"
+        android:layout_margin="15dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true">
 
     </androidx.recyclerview.widget.RecyclerView>
 

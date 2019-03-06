@@ -8,7 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailabilityLight;
+//import com.google.android.gms.common.GoogleApiAvailabilityLight;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
