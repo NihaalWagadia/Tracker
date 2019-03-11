@@ -99,7 +99,6 @@ public class InviteCodeActivity extends AppCompatActivity {
                                                                                         progressDialog.dismiss();
                                                                                     //    Toast.makeText(getApplicationContext(), "Succcccccccc", Toast.LENGTH_SHORT).show();
                                                                                         sendVerificationEmail();
-
                                                                                         Intent i = new Intent(InviteCodeActivity.this, MainActivity.class);
                                                                                         startActivity(i);
 

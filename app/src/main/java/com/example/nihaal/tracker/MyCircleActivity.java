@@ -132,8 +132,8 @@ public class MyCircleActivity extends AppCompatActivity {
             @Override
                     protected void onBindViewHolder(@NonNull CommitteeViewolder committeeViewolder, int i, @NonNull Committee committee) {
 
-                committeeViewolder.username.setText(committee.getName());
-                Picasso.get().load(committee.getImageUrl()).into(committeeViewolder.profileimage);
+                committeeViewolder.username.setText(committee.getJoined_name());
+                Picasso.get().load(committee.getJoined_imageUrl()).into(committeeViewolder.profileimage);
 
 
                     }

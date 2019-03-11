@@ -3,7 +3,9 @@ package com.example.nihaal.tracker;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -26,8 +28,10 @@ public class JoinCircleActivity extends AppCompatActivity {
     DatabaseReference reference, currentRefernce;
     FirebaseUser user;
     FirebaseAuth auth;
-    String current_user_id, join_user_id;
-    DatabaseReference circleReference;
+    String current_user_id;
+    String join_user_id;
+    String joined_name, profile_image;
+    DatabaseReference circleReference, circleRefernce1, circleReference2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,25 @@ public class JoinCircleActivity extends AppCompatActivity {
         reference = FirebaseDatabase.getInstance().getReference().child("Users");
         currentRefernce = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
 
+
         current_user_id = user.getUid();
+
+        //Fetching user name and image
+        currentRefernce.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                joined_name = dataSnapshot.getValue(CreateUser.class).name;
+                profile_image = dataSnapshot.getValue(CreateUser.class).imageUrl;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
     }
 
     public void submitButtonClick(View v){
@@ -55,18 +77,21 @@ public class JoinCircleActivity extends AppCompatActivity {
                         createUser = childDss.getValue(CreateUser.class);
                         join_user_id = createUser.userid;
 
+
                         circleReference = FirebaseDatabase.getInstance().getReference().child("Users")
                                 .child(join_user_id).child("CircleMembers");
 
-                        CircleJoin circleJoin = new CircleJoin(current_user_id);
-                        CircleJoin circleJoin1 = new CircleJoin(join_user_id);
+                        CircleJoin circleJoin = new CircleJoin(current_user_id, joined_name, profile_image);
+                       // CircleJoin circleJoin1 = new CircleJoin(join_user_id);
+
 
                         circleReference.child(user.getUid()).setValue(circleJoin)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()){
-                                            Toast.makeText(getApplicationContext(),"User Joined Circle Successfully", Toast.LENGTH_SHORT).show();
+                                          Toast.makeText(getApplicationContext(),"User Joined Circle Successfully", Toast.LENGTH_SHORT).show();
+
 
                                         }
                                     }

@@ -53,7 +53,7 @@ public class NameActivity extends AppCompatActivity {
         int n  = 100000 + random.nextInt(900000);
         String code = String.valueOf(n);
 
-        if(uri != null){
+        if(uri != null ){
             Intent intent = new Intent(this, InviteCodeActivity.class);
             intent.putExtra("name",e5_name.getText().toString());
             intent.putExtra("email", email);
@@ -65,8 +65,10 @@ public class NameActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-        else{
-            Toast.makeText(getApplicationContext(),"Please choose an image", Toast.LENGTH_SHORT).show();
+        else
+            {
+           Toast.makeText(getApplicationContext(),"Please choose an image", Toast.LENGTH_SHORT).show();
+
         }
 
     }
