@@ -29,9 +29,9 @@ public class JoinCircleActivity extends AppCompatActivity {
     FirebaseUser user;
     FirebaseAuth auth;
     String current_user_id;
-    String join_user_id;
-    String joined_name, profile_image;
-    DatabaseReference circleReference, circleRefernce1, circleReference2;
+    String join_user_id, joined_name, profile_image, lat ,lng;
+    String connected_username, connected_imageUrl;
+    DatabaseReference circleReference, connectedReference, circleReference2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +50,13 @@ public class JoinCircleActivity extends AppCompatActivity {
         currentRefernce.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("Naemmmmm",String.valueOf(dataSnapshot.getValue(CreateUser.class).name));
+
                 joined_name = dataSnapshot.getValue(CreateUser.class).name;
+
                 profile_image = dataSnapshot.getValue(CreateUser.class).imageUrl;
+                lat = dataSnapshot.getValue(CreateUser.class).lat;
+                lng = dataSnapshot.getValue(CreateUser.class).lng;
             }
 
             @Override
@@ -59,6 +64,7 @@ public class JoinCircleActivity extends AppCompatActivity {
 
             }
         });
+
 
 
 
@@ -76,13 +82,31 @@ public class JoinCircleActivity extends AppCompatActivity {
                     for(DataSnapshot childDss : dataSnapshot.getChildren()){
                         createUser = childDss.getValue(CreateUser.class);
                         join_user_id = createUser.userid;
+                        connected_username = createUser.name;
+                        connected_imageUrl = createUser.imageUrl;
+//                        reference.addValueEventListener(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                connected_username = dataSnapshot.getValue(CreateUser.class).name;
+//                                connected_imageUrl = dataSnapshot.getValue(CreateUser.class).imageUrl;
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//
+//                            }
+//                        });
 
 
                         circleReference = FirebaseDatabase.getInstance().getReference().child("Users")
                                 .child(join_user_id).child("CircleMembers");
 
-                        CircleJoin circleJoin = new CircleJoin(current_user_id, joined_name, profile_image);
+                        connectedReference = FirebaseDatabase.getInstance().getReference().child("Users")
+                                .child(current_user_id).child("MyJoinedUsers");
+
+                        CircleJoin circleJoin = new CircleJoin(current_user_id, joined_name, profile_image, lat,lng);
                        // CircleJoin circleJoin1 = new CircleJoin(join_user_id);
+                        final JoinedCircle joinedCircle = new JoinedCircle(join_user_id, connected_username, connected_imageUrl );
 
 
                         circleReference.child(user.getUid()).setValue(circleJoin)
@@ -91,6 +115,19 @@ public class JoinCircleActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()){
                                           Toast.makeText(getApplicationContext(),"User Joined Circle Successfully", Toast.LENGTH_SHORT).show();
+
+                                          connectedReference.child(user.getUid()).setValue(joinedCircle)
+                                                  .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                      @Override
+                                                      public void onComplete(@NonNull Task<Void> task) {
+                                                        if(task.isSuccessful()){
+                                                            Toast.makeText(getApplicationContext(),"updated", Toast.LENGTH_SHORT).show();
+
+                                                        }
+                                                      }
+                                                  });
+
+
 
 
                                         }

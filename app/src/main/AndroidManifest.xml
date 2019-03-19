@@ -21,7 +21,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MyCircleActivity"></activity>
+        <activity android:name=".JoinedCircleActivity"></activity>
+        <activity android:name=".MyCircleActivity" />
         <activity android:name=".JoinCircleActivity" />
         <activity
             android:name=".UserLocationMainActivity"

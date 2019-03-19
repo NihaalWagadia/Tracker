@@ -23,12 +23,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NameActivity extends AppCompatActivity {
-        String email, password;
-        EditText e5_name;
-        CircleImageView circleImageView;
-        Uri uri;
+    String email, password;
+    EditText e5_name;
+    CircleImageView circleImageView;
+    Uri uri;
 
-        @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_name);
@@ -45,7 +45,7 @@ public class NameActivity extends AppCompatActivity {
 
     public void generateCode(View v){
 
-            Date myDate = new Date();
+        Date myDate = new Date();
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a", Locale.getDefault());
         String date = format1.format(myDate);
         Random random = new Random();
@@ -66,18 +66,18 @@ public class NameActivity extends AppCompatActivity {
             finish();
         }
         else
-            {
-           Toast.makeText(getApplicationContext(),"Please choose an image", Toast.LENGTH_SHORT).show();
+        {
+            Toast.makeText(getApplicationContext(),"Please choose an image", Toast.LENGTH_SHORT).show();
 
         }
 
     }
 
     public void selectImage(View v){
-            Intent i = new Intent();
-            i.setAction(Intent.ACTION_GET_CONTENT);
-            i.setType("image/*");
-            startActivityForResult(i,12);
+        Intent i = new Intent();
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        i.setType("image/*");
+        startActivityForResult(i,12);
 
     }
 

@@ -27,11 +27,29 @@ public class Committee {
     }
 
     //  public String name, imageUrl, userid;
-    public String circlememberid, joined_name,joined_imageUrl;
-    public Committee(String circlememberid, String joined_name, String joined_imageUrl){
+    public String circlememberid, joined_name,joined_imageUrl, lat, lng;
+    public Committee(String circlememberid, String joined_name, String joined_imageUrl, String lat, String lng){
         this.circlememberid = circlememberid;
         this.joined_name = joined_name;
         this.joined_imageUrl = joined_imageUrl;
+        this.lat = lat;
+        this.lng = lng;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
     public Committee()

@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +33,6 @@ import java.util.ArrayList;
 public class MyCircleActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-  //  RecyclerView.Adapter adapter;
     LinearLayoutManager linearLayoutManager;
 
     FirebaseAuth auth;
@@ -130,13 +131,11 @@ public class MyCircleActivity extends AppCompatActivity {
 
 
             @Override
-                    protected void onBindViewHolder(@NonNull CommitteeViewolder committeeViewolder, int i, @NonNull Committee committee) {
-
+            protected void onBindViewHolder(@NonNull CommitteeViewolder committeeViewolder, int i, @NonNull Committee committee) {
                 committeeViewolder.username.setText(committee.getJoined_name());
                 Picasso.get().load(committee.getJoined_imageUrl()).into(committeeViewolder.profileimage);
-
-
                     }
+
 
 
 
@@ -147,6 +146,10 @@ public class MyCircleActivity extends AppCompatActivity {
                         CommitteeViewolder viewholder = new CommitteeViewolder(view);
                         return  viewholder;
                      }
+
+
+
+
                 };
         recyclerView.setAdapter(adapter);
         adapter.startListening();
@@ -158,11 +161,14 @@ public class MyCircleActivity extends AppCompatActivity {
         {
             TextView username;
             CircleImageView profileimage;
+            Button button;
 
             public CommitteeViewolder(@NonNull View itemView) {
                 super(itemView);
                 username = itemView.findViewById(R.id.item_title);
                 profileimage = itemView.findViewById(R.id.iv11);
+                button = itemView.findViewById(R.id.delete_button);
+
             }
         }
 

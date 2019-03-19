@@ -9,7 +9,6 @@
     tools:showIn="@layout/app_bar_user_location_main">
 
 
-
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -18,5 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MyNavigationActivity" />
+
+
+
 
 </RelativeLayout>

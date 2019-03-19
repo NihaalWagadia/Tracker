@@ -62,7 +62,7 @@ public class InviteCodeActivity extends AppCompatActivity {
     }
 
     public void registerUser(View v) {
-        progressDialog.setMessage("Please Wait, Fucker");
+        progressDialog.setMessage("Please Wait, Human");
         progressDialog.show();
 
         auth.createUserWithEmailAndPassword(email, password)
@@ -73,7 +73,7 @@ public class InviteCodeActivity extends AppCompatActivity {
                             //insert values in Real time database
                             user = auth.getCurrentUser();
 
-                            CreateUser createUser = new CreateUser(name, email, password, code, "false", "na", "na", "na", user.getUid());
+                            CreateUser createUser = new CreateUser(name, email, password, code, "false", "na", "na", "na", user.getUid(), "na");
 
                             user = auth.getCurrentUser();
                             userId = user.getUid();

@@ -6,7 +6,7 @@ public class CreateUser {
 
     }
 
-    public CreateUser(String name, String email, String password, String code, String isSharing, String lat, String lng, String imageUrl, String userid) {
+    public CreateUser(String name, String email, String password, String code, String isSharing, String lat, String lng, String imageUrl, String userid, String date) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -16,8 +16,9 @@ public class CreateUser {
         this.lng = lng;
         this.imageUrl = imageUrl;
         this.userid  = userid;
+        this.date = date;
     }
 
-    public String name, email, password, isSharing, code, lat, lng, imageUrl, userid;
+    public String name, email, password, isSharing, code, lat, lng, imageUrl, userid, date;
 
 }
