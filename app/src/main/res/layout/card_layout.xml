@@ -9,11 +9,11 @@
         android:orientation="horizontal"
         android:padding="15dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv11"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
-            android:src="@drawable/defaultimage" />
+        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:id="@+id/iv11"-->
+            <!--android:layout_width="85dp"-->
+            <!--android:layout_height="85dp"-->
+            <!--android:src="@drawable/defaultimage" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,13 +37,14 @@
                 android:gravity="start"
                 android:textStyle="bold"/>
 
-            <Button
-                android:id="@+id/delete_button"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="--"
-                android:background="#FFFFFF"/>
+            <!--<Button-->
+                <!--android:id="@+id/delete_button"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="&#45;&#45;"-->
+                <!--android:background="#FFFFFF"-->
+                <!--android:onClick="delete_User"/>-->
 
             <!--<ImageView-->
                 <!--android:layout_width="0dp"-->

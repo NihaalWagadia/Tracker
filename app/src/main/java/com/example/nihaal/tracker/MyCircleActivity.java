@@ -37,19 +37,19 @@ public class MyCircleActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
     FirebaseUser user;
-    CreateUser createUser;
-    ArrayList<CreateUser> namelist;
     DatabaseReference reference, userReference;
-    String circlememberid;
+
+    Button button;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_circle);
         recyclerView = findViewById(R.id.all_friends);
-        auth = (FirebaseAuth) FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
+        auth = FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
         user = auth.getCurrentUser();
-        namelist = new ArrayList<>();
+        button = findViewById(R.id.delete_user);
 
         //*today
 
@@ -65,6 +65,8 @@ public class MyCircleActivity extends AppCompatActivity {
 
         reference = FirebaseDatabase.getInstance().getReference().child("Users");
         userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid()).child("CircleMembers");
+
+
 
 //        reference.addValueEventListener(new ValueEventListener() {
 //            @Override
@@ -131,9 +133,63 @@ public class MyCircleActivity extends AppCompatActivity {
 
 
             @Override
-            protected void onBindViewHolder(@NonNull CommitteeViewolder committeeViewolder, int i, @NonNull Committee committee) {
+            protected void onBindViewHolder(@NonNull CommitteeViewolder committeeViewolder, final int i, @NonNull final Committee committee) {
                 committeeViewolder.username.setText(committee.getJoined_name());
-                Picasso.get().load(committee.getJoined_imageUrl()).into(committeeViewolder.profileimage);
+
+//                committeeViewolder.username.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Toast.makeText(getApplicationContext(),"OnClick Called on position" + i, Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                });
+//                committeeViewolder.username.setOnLongClickListener(new View.OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View v) {
+//                        Toast.makeText(getApplicationContext(),"OnLongClick Called on position" + i, Toast.LENGTH_SHORT).show();
+//                        final String str = committee.getCirclememberid().substring(0,6);
+//                        userReference.child(str).addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                Log.d("Finish", String.valueOf(userReference.child(str)));
+//                                userReference.child(str).removeValue();
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//
+//                            }
+//                        });
+//                        return true;
+//                    }
+//                });
+
+                committeeViewolder.username.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("Position", String.valueOf(committee.getCirclememberid()));
+                        committee.getCirclememberid();
+                    }
+                });
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final String string = committee.getCirclememberid();
+                            userReference.child(string).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    userReference.child(string).removeValue();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                            Toast.makeText(getApplicationContext(), "DELETED", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                     }
 
 
@@ -157,17 +213,36 @@ public class MyCircleActivity extends AppCompatActivity {
 
     }
 
+//    public void delete_User(View v){
+//        FirebaseAuth mAuth;
+//        final FirebaseUser mUser;
+//
+//        mAuth = (FirebaseAuth) FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
+//        mUser = mAuth.getCurrentUser();
+//        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid()).child("CircleMembers");
+//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                ref.child(mUser.getUid()).removeValue();
+//                Log.d("DELETE", String.valueOf(ref.child(mUser.getUid()).removeValue()));
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
+
     public static class CommitteeViewolder extends  RecyclerView.ViewHolder
         {
             TextView username;
             CircleImageView profileimage;
-            Button button;
 
             public CommitteeViewolder(@NonNull View itemView) {
                 super(itemView);
                 username = itemView.findViewById(R.id.item_title);
-                profileimage = itemView.findViewById(R.id.iv11);
-                button = itemView.findViewById(R.id.delete_button);
+
 
             }
         }

@@ -71,7 +71,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MemberVi
             user = auth.getCurrentUser();
 
             name_txt = itemView.findViewById(R.id.item_title);
-            circleImageView = itemView.findViewById(R.id.iv11);
+
 
         }
 

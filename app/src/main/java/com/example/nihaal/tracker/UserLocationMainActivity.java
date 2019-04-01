@@ -9,6 +9,8 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
@@ -56,6 +58,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,6 +83,7 @@ public class UserLocationMainActivity extends AppCompatActivity
     TextView t1_currentName, t2_currentEmail;
     ImageView iv;
     LocationManager manager;
+    int a = 0;
     ArrayList<MarkerName> markerNames = new ArrayList<MarkerName>();
 
 
@@ -92,73 +96,81 @@ public class UserLocationMainActivity extends AppCompatActivity
         auth = (FirebaseAuth) FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
         user = auth.getCurrentUser();
 
+//            if(user.getEmail().isEmpty()){
+//                Intent intent = new Intent(UserLocationMainActivity.this, MainActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//            else {
+                all_circle_members = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+                Query query = all_circle_members.orderByChild("CircleMembers");
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        CircleJoin circleJoin = null;
+                        MarkerName markerName = null;
+                        Log.d("XYz", dataSnapshot.child("CircleMembers").getChildrenCount() + "");
+                        for (DataSnapshot childDss : dataSnapshot.child("CircleMembers").getChildren()) {
+                            circleJoin = childDss.getValue(CircleJoin.class);
+                            String latit = circleJoin.lat;
+                            String longi = circleJoin.lng;
+                            LatLng latLng1 = new LatLng(Double.valueOf(latit), Double.valueOf(longi));
+                            markerName = new MarkerName(circleJoin.joined_name, latLng1);
+                            markerNames.add(markerNames.size(), markerName);
 
-        all_circle_members = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
-        Query query = all_circle_members.orderByChild("CircleMembers");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                CircleJoin circleJoin = null;
-                MarkerName markerName = null;
-                Log.d("XYz", dataSnapshot.child("CircleMembers").getChildrenCount() + "");
-                for (DataSnapshot childDss : dataSnapshot.child("CircleMembers").getChildren()) {
-                    circleJoin = childDss.getValue(CircleJoin.class);
-                    String latit = circleJoin.lat;
-                    String longi = circleJoin.lng;
-                    LatLng latLng1 = new LatLng(Double.valueOf(latit), Double.valueOf(longi));
-                    markerName = new MarkerName(circleJoin.joined_name, latLng1);
-                    markerNames.add(markerNames.size(), markerName);
 
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+//            }
+
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+
+            View header = navigationView.getHeaderView(0);
+            t1_currentName = header.findViewById(R.id.title_text);
+            t2_currentEmail = header.findViewById(R.id.email_text);
+
+
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                    current_user_name = dataSnapshot.child(user.getUid()).child("name").getValue(String.class);
+                    current_user_email = dataSnapshot.child(user.getUid()).child("email").getValue(String.class);
+
+                    t1_currentName.setText(current_user_name);
+                    t2_currentEmail.setText(current_user_email);
+
+
+                    Log.d("PROOOOOOOO", current_user_email);
 
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        View header = navigationView.getHeaderView(0);
-        t1_currentName = header.findViewById(R.id.title_text);
-        t2_currentEmail = header.findViewById(R.id.email_text);
-        iv = header.findViewById(R.id.imageView);
-
-
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-
-                current_user_name = dataSnapshot.child(user.getUid()).child("name").getValue(String.class);
-                current_user_email = dataSnapshot.child(user.getUid()).child("email").getValue(String.class);
-                current_user_imageUrl = dataSnapshot.child(user.getUid()).child("imageUrl").getValue(String.class);
-
-                t1_currentName.setText(current_user_name);
-                t2_currentEmail.setText(current_user_email);
-                Picasso.get().load(current_user_imageUrl).into(iv);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
 
     }
@@ -313,6 +325,11 @@ public class UserLocationMainActivity extends AppCompatActivity
                 options.title(x.getName());
 
                 mMap.addMarker(options);
+                if(a == 0 ) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16));
+                    mMap.getUiSettings().setZoomControlsEnabled(true);
+                    a++;
+                }
             }
 
 //                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));

@@ -7,19 +7,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 public class JoinedCircleActivity extends AppCompatActivity {
@@ -29,6 +34,7 @@ public class JoinedCircleActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     DatabaseReference mReference, mUserReference;
+    Button button;
 
 
 
@@ -41,6 +47,7 @@ public class JoinedCircleActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.joined_friends);
         mAuth = FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
         mUser = mAuth.getCurrentUser();
+        button = findViewById(R.id.delete_joined_user);
 
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(true);
@@ -65,9 +72,36 @@ public class JoinedCircleActivity extends AppCompatActivity {
 
 
                     @Override
-                    protected void onBindViewHolder(@NonNull JoinedCirlce_Viewolder joinedCirlce_viewolder, int i, @NonNull JoinedCircle joinedCircle) {
+                    protected void onBindViewHolder(@NonNull JoinedCirlce_Viewolder joinedCirlce_viewolder, int i, @NonNull final JoinedCircle joinedCircle) {
                         joinedCirlce_viewolder.username.setText(joinedCircle.getConnected_name());
-                        Picasso.get().load(joinedCircle.getConnected_imageUrl()).into(joinedCirlce_viewolder.profileimage);
+
+                        joinedCirlce_viewolder.username.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.d("Position1", String.valueOf(joinedCircle.getConected_id()));
+                                joinedCircle.getConected_id();
+                            }
+                        });
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final String string = joinedCircle.getConected_id();
+                                mUserReference.child(string).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Log.d("Position123", String.valueOf(joinedCircle.getConected_id()));
+                                        mUserReference.child(string).removeValue();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                                Toast.makeText(getApplicationContext(),"DELETED", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                     }
 
 //                    @Override
@@ -100,14 +134,11 @@ public class JoinedCircleActivity extends AppCompatActivity {
     public static class JoinedCirlce_Viewolder extends  RecyclerView.ViewHolder
     {
         TextView username;
-        CircleImageView profileimage;
-        Button button;
+
 
         public JoinedCirlce_Viewolder(@NonNull View itemView) {
             super(itemView);
             username = itemView.findViewById(R.id.item_title);
-            profileimage = itemView.findViewById(R.id.iv11);
-            button = itemView.findViewById(R.id.delete_button);
         }
     }
 }
