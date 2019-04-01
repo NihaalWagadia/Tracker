@@ -75,7 +75,7 @@ public class JoinCircleActivity extends AppCompatActivity {
 // 1) to check if the input code is present ot not in database.
         //2) if code is present, find that user and create a node(Circle members)
         Query query = reference.orderByChild("code").equalTo(pinview.getPin());
-        
+
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
