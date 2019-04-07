@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,7 +40,7 @@ public class MyCircleActivity extends AppCompatActivity {
     FirebaseUser user;
     DatabaseReference reference, userReference;
 
-    Button button;
+    Button button, button_back;
 
 
     @Override
@@ -50,6 +51,8 @@ public class MyCircleActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
         user = auth.getCurrentUser();
         button = findViewById(R.id.delete_user);
+        button_back = findViewById(R.id.back_myCircle);
+        Toast.makeText(getApplicationContext(),"To delete a user simply click on the user name and press the delete button",Toast.LENGTH_LONG).show();
 
         //*today
 
@@ -116,6 +119,11 @@ public class MyCircleActivity extends AppCompatActivity {
 //        adapter = new MembersAdapter(namelist, getApplicationContext());
 //        recyclerView.setAdapter(adapter);
 //        adapter.notifyDataSetChanged();
+    }
+
+    public void back_myCircle(View v){
+        Intent intent = new Intent(MyCircleActivity.this, UserLocationMainActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -190,6 +198,14 @@ public class MyCircleActivity extends AppCompatActivity {
                         }
                     });
 
+//                    button_back.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Intent intent = new Intent(MyCircleActivity.this, UserLocationMainActivity.class);
+//                            startActivity(intent);
+//                        }
+//                    });
+
                     }
 
 
@@ -236,12 +252,14 @@ public class MyCircleActivity extends AppCompatActivity {
 
     public static class CommitteeViewolder extends  RecyclerView.ViewHolder
         {
-            TextView username;
-            CircleImageView profileimage;
+            TextView username, position_user;
+
 
             public CommitteeViewolder(@NonNull View itemView) {
                 super(itemView);
                 username = itemView.findViewById(R.id.item_title);
+
+
 
 
             }

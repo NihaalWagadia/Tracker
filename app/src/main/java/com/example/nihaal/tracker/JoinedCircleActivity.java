@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,6 +59,11 @@ public class JoinedCircleActivity extends AppCompatActivity {
         mReference = FirebaseDatabase.getInstance().getReference().child("Users");
         mUserReference = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid()).child("MyJoinedUsers");
 
+    }
+
+    public void back_JoinedClick(View v){
+        Intent intent = new Intent(JoinedCircleActivity.this, UserLocationMainActivity.class);
+        startActivity(intent);
     }
 
     @Override

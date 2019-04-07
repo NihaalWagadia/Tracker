@@ -46,7 +46,6 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MemberVi
 
         CreateUser currentUserObj = namelist.get(position);
         holder.name_txt.setText(currentUserObj.name);
-        Picasso.get().load(currentUserObj.imageUrl).placeholder(R.drawable.defaultimage).into(holder.circleImageView);
 
 
 

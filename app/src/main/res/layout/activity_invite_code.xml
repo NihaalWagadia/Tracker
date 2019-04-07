@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InviteCodeActivity">
+    tools:context=".InviteCodeActivity"
+    android:background="#f95a3d"
+    >
 
     <TextView
         android:id="@+id/textView"
@@ -15,7 +17,8 @@
         android:layout_marginTop="118dp"
         android:text="XXXXXX"
         android:textSize="26dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"/>
 
     <TextView
         android:id="@+id/textView2"
@@ -25,7 +28,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="205dp"
         android:gravity="center_horizontal"
-        android:text="Save this code. Your friend will need it" />
+        android:text="Save this code. Your friend will need it"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
 
     <Button
         android:id="@+id/button5"
@@ -40,6 +45,6 @@
         android:textStyle="bold"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        android:background="#00bfa5"/>
+        android:background="#fa4545"/>
 
 </RelativeLayout>

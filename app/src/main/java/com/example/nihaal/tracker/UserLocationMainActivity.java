@@ -93,6 +93,7 @@ public class UserLocationMainActivity extends AppCompatActivity
         setContentView(R.layout.activity_user_location_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Map");
         auth = (FirebaseAuth) FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
         user = auth.getCurrentUser();
 
@@ -231,9 +232,9 @@ public class UserLocationMainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

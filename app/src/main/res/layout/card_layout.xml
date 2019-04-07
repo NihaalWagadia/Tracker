@@ -10,10 +10,10 @@
         android:padding="15dp">
 
         <!--<de.hdodenhof.circleimageview.CircleImageView-->
-            <!--android:id="@+id/iv11"-->
-            <!--android:layout_width="85dp"-->
-            <!--android:layout_height="85dp"-->
-            <!--android:src="@drawable/defaultimage" />-->
+        <!--android:id="@+id/iv11"-->
+        <!--android:layout_width="85dp"-->
+        <!--android:layout_height="85dp"-->
+        <!--android:src="@drawable/defaultimage" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,22 +22,23 @@
 
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="200dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="My User"
-                android:textAlignment="textStart"
-                android:textSize="22sp"
-                android:id="@+id/item_title"
-                android:gravity="start"
-                android:textStyle="bold"/>
+                android:orientation="horizontal">
 
-            <!--<Button-->
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="My User"
+                    android:textAlignment="textStart"
+                    android:textSize="22sp"
+                    android:id="@+id/item_title"
+                    android:gravity="start"
+                    android:textStyle="bold"
+                    android:textColor="#fcfdfe"/>
+
+                <!--<Button-->
                 <!--android:id="@+id/delete_button"-->
                 <!--android:layout_width="wrap_content"-->
                 <!--android:layout_height="match_parent"-->
@@ -46,17 +47,17 @@
                 <!--android:background="#FFFFFF"-->
                 <!--android:onClick="delete_User"/>-->
 
-            <!--<ImageView-->
+                <!--<ImageView-->
                 <!--android:layout_width="0dp"-->
                 <!--android:layout_height="40dp"-->
                 <!--android:layout_weight="1"-->
                 <!--android:id="@+id/item_imageProfile"-->
                 <!--android:src="@drawable/red_offline"-->
-                 <!--/>-->
+                <!--/>-->
+
+            </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
 
     </LinearLayout>
 

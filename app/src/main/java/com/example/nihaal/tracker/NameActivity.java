@@ -131,7 +131,7 @@ public class NameActivity extends AppCompatActivity {
         int n  = 100000 + random.nextInt(900000);
         String code = String.valueOf(n);
 
-        if(uri != null ){
+        if(email != null ){
             Intent intent = new Intent(this, InviteCodeActivity.class);
             intent.putExtra("name",e5_name.getText().toString());
             intent.putExtra("email", email);
@@ -139,15 +139,10 @@ public class NameActivity extends AppCompatActivity {
             intent.putExtra("date",date);
             intent.putExtra("isSharing", "false");
             intent.putExtra("code", code);
-            intent.putExtra("imageUri", uri);
             startActivity(intent);
             finish();
         }
-        else
-        {
-            Toast.makeText(getApplicationContext(),"Please choose an image", Toast.LENGTH_SHORT).show();
 
-        }
 
     }
 

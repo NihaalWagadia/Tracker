@@ -5,16 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NameActivity">
+    tools:context=".NameActivity"
+    android:background="#f95a3d">
 
-    <ImageView
-        android:id="@+id/ImageView"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="17dp"
-        android:src="@drawable/defaultimage"/>
+    
 
     <EditText
         android:id="@+id/editText_name"
@@ -28,7 +22,8 @@
         android:layout_marginTop="191dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Enter Your Name" />
+        android:hint="Enter Your Name"
+        android:textColor="#FFFFFF"/>
 
     <Button
         android:id="@+id/button4"
@@ -41,5 +36,7 @@
         android:layout_marginRight="-10dp"
         android:layout_marginBottom="111dp"
         android:onClick="generateCode"
-        android:text="Next" />
+        android:text="Next"
+        android:background="#fa4545"
+        android:textColor="#FFFFFF"/>
 </RelativeLayout>

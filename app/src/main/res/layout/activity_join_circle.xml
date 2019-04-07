@@ -4,41 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".JoinCircleActivity">
+    tools:context=".JoinCircleActivity"
+    android:background="#fa5d72">
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="63dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginLeft="93dp"
+        android:layout_marginTop="148dp"
         android:gravity="center"
         android:text="Enter Circle Code To Join"
         android:textSize="16sp"
-        android:layout_alignParentLeft="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#d10d27"/>
 
+
+    <!--<xyz.farhanfarooqui.pinview.PinView-->
+        <!--android:id="@+id/pinview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="51dp"-->
+        <!--android:layout_below="@+id/textView3"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_marginTop="151dp"-->
+        <!--app:pCount="6"-->
+        <!--app:pGap="@dimen/activity_horizontal_margin"-->
+        <!--app:pSize="40dp"-->
+        <!--app:pTextColor="#FFFFFF"-->
+        <!--app:pTextSize="16sp"-->
+        <!--android:layout_alignParentLeft="true" />-->
 
     <xyz.farhanfarooqui.pinview.PinView
         android:id="@+id/pinview"
-        android:layout_width="match_parent"
-        android:layout_height="51dp"
-        android:layout_below="@+id/textView3"
-        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="236dp"
         app:pCount="6"
-        app:pGap="@dimen/activity_horizontal_margin"
-        app:pSize="55dp"
-        app:pTextColor="#FFFFFF"
+        app:pFont="montserrat.otf"
+        app:pGap="5dp"
+        app:pSize="35dp"
+        app:pTextColor="#ECE9E8"
         app:pTextSize="16sp" />
 
 
     <Button
         android:id="@+id/button6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="214dp"
+        android:layout_height="38dp"
         android:layout_below="@+id/pinview"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="71dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="320dp"
+        android:background="@android:color/transparent"
         android:onClick="submitButtonClick"
-        android:text="Submit" />
+        android:text="Submit"
+        android:textColor="#d10d27" />
+
+
+    <Button
+        android:id="@+id/back_joinCircle"
+        android:layout_width="193dp"
+        android:layout_height="38dp"
+        android:layout_below="@+id/pinview"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="320dp"
+        android:layout_marginEnd="2dp"
+        android:background="@android:color/transparent"
+        android:text="Back"
+        android:textColor="#d10d27"
+        android:onClick="backButtonClick"
+        android:layout_marginRight="2dp"
+        android:layout_alignParentRight="true" />
 </RelativeLayout>

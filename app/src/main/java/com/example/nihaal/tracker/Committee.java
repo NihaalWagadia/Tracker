@@ -18,20 +18,13 @@ public class Committee {
         this.joined_name = joined_name;
     }
 
-    public String getJoined_imageUrl() {
-        return joined_imageUrl;
-    }
 
-    public void setJoined_imageUrl(String joined_imageUrl) {
-        this.joined_imageUrl = joined_imageUrl;
-    }
 
     //  public String name, imageUrl, userid;
-    public String circlememberid, joined_name,joined_imageUrl, lat, lng;
-    public Committee(String circlememberid, String joined_name, String joined_imageUrl, String lat, String lng){
+    public String circlememberid, joined_name, lat, lng;
+    public Committee(String circlememberid, String joined_name, String lat, String lng){
         this.circlememberid = circlememberid;
         this.joined_name = joined_name;
-        this.joined_imageUrl = joined_imageUrl;
         this.lat = lat;
         this.lng = lng;
     }

@@ -9,4 +9,5 @@
     <string name="title_activity_my_navigation">Map</string>
     <string name="title_activity_user_location_main">UserLocationMainActivity</string>
     <string name="title_activity_start">StartActivity</string>
+    <string name="title_activity_useless">useless</string>
 </resources>

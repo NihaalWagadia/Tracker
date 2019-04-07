@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login">
+    tools:context=".Login"
+    android:background="#f95a3d">
 
     <EditText
         android:id="@+id/emailid"
@@ -18,7 +19,8 @@
         android:ems="10"
         android:inputType="textEmailAddress"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="2dp" />
+        android:layout_marginLeft="2dp"
+        android:textColor="#FFFFFF"/>
 
     <EditText
         android:id="@+id/password"
@@ -32,7 +34,8 @@
         android:layout_marginLeft="0dp"
         android:layout_marginTop="172dp"
         android:ems="10"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"/>
 
     <Button
         android:id="@+id/button"
@@ -46,6 +49,6 @@
         android:textStyle="bold"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        android:background="#00bfa5"
+        android:background="#fa4545"
         />
 </RelativeLayout>
