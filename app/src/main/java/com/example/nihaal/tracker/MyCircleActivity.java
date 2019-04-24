@@ -27,7 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.ArrayList;
 
@@ -67,7 +67,9 @@ public class MyCircleActivity extends AppCompatActivity {
         //today*
 
         reference = FirebaseDatabase.getInstance().getReference().child("Users");
+        reference.keepSynced(true);
         userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid()).child("CircleMembers");
+        userReference.keepSynced(true);
 
 
 

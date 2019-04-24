@@ -44,6 +44,7 @@ public class InviteCodeActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         Intent myIntent = getIntent();
         reference = FirebaseDatabase.getInstance().getReference().child("Users");
+        reference.keepSynced(true);
         storageReference = FirebaseStorage.getInstance().getReference().child("User_images");
 
         if (myIntent != null) {
@@ -62,7 +63,7 @@ public class InviteCodeActivity extends AppCompatActivity {
     }
 
     public void registerUser(View v) {
-        progressDialog.setMessage("Please Wait, Human");
+        progressDialog.setMessage("Please Wait");
         progressDialog.show();
 
         auth.createUserWithEmailAndPassword(email, password)

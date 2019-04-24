@@ -41,13 +41,7 @@ public class NameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_name);
         e5_name = findViewById(R.id.editText_name);
-        mImageView = findViewById(R.id.ImageView);
-        mImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkandroidversion();
-            }
-        });
+
 
         Intent myIntent = getIntent();
         if (myIntent!= null){
@@ -146,85 +140,6 @@ public class NameActivity extends AppCompatActivity {
 
     }
 
-    public void selectImage(View v){
-//        Intent i = new Intent();
-//        i.setAction(Intent.ACTION_GET_CONTENT);
-//        i.setType("image/*");
-//        startActivityForResult(i,12);
-        CropImage.startPickImageActivity(this);
-
-    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if(requestCode == 12 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null){
-//
-//            CropImage.activity()
-//                    .setGuidelines(CropImageView.Guidelines.ON)
-//                    .setAspectRatio(1,1)
-//                    .start(this);
-//            uri = data.getData();
-//            try {
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-//                mImageView.setImageBitmap(bitmap);
-//            }
-//            catch (IOException e){
-//                e.printStackTrace();
-//            }
-//
-//        }
-
-//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//            if (resultCode == RESULT_OK) {
-//            }
-//        }
 
 
-//                mImageView.setImageURI(uri);
-//                uri = result.getUri();
-//                final Uri imageUri = data.getData();
-//                uri = imageUri;
-//                mImageView.setImageURI(uri);
-
-//            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                Exception error = result.getError();
-//            }
-
- //   }
-
-//    private void cropRequest(Uri imageUri){
-//        CropImage.activity(imageUri)
-//                .setGuidelines(CropImageView.Guidelines.ON)
-//                .setMultiTouchEnabled(true)
-//                .start(this);
-//
-//    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        //Result from selected data
-//
-//        if(requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && requestCode ==Activity.RESULT_OK){
-//            Uri mUri = CropImage.getPickImageResultUri(this, data);
-//            cropRequest(mUri);
-//        }
-//
-//        //Result from cropping activity
-//        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
-//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//            if(requestCode == RESULT_OK){
-//                try {
-//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result.getUri());
-//                    mImageView.setImageBitmap(bitmap);
-//                }
-//                catch (IOException e){
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
 }

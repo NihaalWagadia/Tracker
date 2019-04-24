@@ -26,7 +26,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 public class JoinedCircleActivity extends AppCompatActivity {
 
@@ -57,7 +56,10 @@ public class JoinedCircleActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         mReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        mReference.keepSynced(true);
+
         mUserReference = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid()).child("MyJoinedUsers");
+        mUserReference.keepSynced(true);
 
     }
 

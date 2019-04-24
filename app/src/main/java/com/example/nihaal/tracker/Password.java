@@ -35,7 +35,7 @@ public class Password extends AppCompatActivity {
         }
         else {
 
-            Toast.makeText(getApplicationContext(), "Length is small", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Password length should be greater than 6 characters", Toast.LENGTH_SHORT).show();
         }
     }
 }

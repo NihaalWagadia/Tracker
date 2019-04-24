@@ -41,7 +41,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -104,6 +104,7 @@ public class UserLocationMainActivity extends AppCompatActivity
 //            }
 //            else {
                 all_circle_members = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+                all_circle_members.keepSynced(true);
                 Query query = all_circle_members.orderByChild("CircleMembers");
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -150,6 +151,7 @@ public class UserLocationMainActivity extends AppCompatActivity
 
 
             databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+            databaseReference.keepSynced(true);
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -190,6 +192,8 @@ public class UserLocationMainActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         pointingRef = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+        pointingRef.keepSynced(true);
+
         pointingRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -278,6 +282,11 @@ public class UserLocationMainActivity extends AppCompatActivity
 
         }
 
+        else if(id == R.id.nav_code){
+            Intent intent = new Intent(UserLocationMainActivity.this, MyCode.class);
+            startActivity(intent);
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -338,6 +347,7 @@ public class UserLocationMainActivity extends AppCompatActivity
 
 
             rootRef = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+            rootRef.keepSynced(true);
             rootRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

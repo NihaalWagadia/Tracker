@@ -27,19 +27,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class JoinCircleActivity extends AppCompatActivity {
 
     PinView pinview;
-    DatabaseReference reference, currentRefernce;
     FirebaseUser user;
     FirebaseAuth auth;
     String current_user_id;
     String join_user_id, joined_name, profile_image, lat ,lng;
     String connected_username, connected_imageUrl;
-    DatabaseReference circleReference, connectedReference, databaseReference;
+    DatabaseReference circleReference, connectedReference, databaseReference, reference, currentRefernce, Notification;
     boolean user_exists = false;
+    String CURRENT_STATE = "NO";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +50,14 @@ public class JoinCircleActivity extends AppCompatActivity {
         auth = (FirebaseAuth) FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
         user = auth.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference().child("Users");
+        reference.keepSynced(true);
         currentRefernce = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+        currentRefernce.keepSynced(true);
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+        databaseReference.keepSynced(true);
 
+        Notification = FirebaseDatabase.getInstance().getReference().child("Notification");
+        Notification.keepSynced(true);
 
         current_user_id = user.getUid();
 
@@ -84,18 +90,15 @@ public class JoinCircleActivity extends AppCompatActivity {
     }
 
 
-
     public void submitButtonClick(View v){
 // 1) to check if the input code is present ot not in database.
         //2) if code is present, find that user and create a node(Circle members)
         if(join_user_id == null) {
             Log.d("joinuserid", "no user id");
         }
+
+
         Query query = reference.orderByChild("code").equalTo(pinview.getPin());
-
-
-
-
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
@@ -106,25 +109,6 @@ public class JoinCircleActivity extends AppCompatActivity {
                         createUser = childDss.getValue(CreateUser.class);
                         join_user_id = createUser.userid;
                         connected_username = createUser.name;
-//                        reference.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                connected_username = dataSnapshot.getValue(CreateUser.class).name;
-//                                connected_imageUrl = dataSnapshot.getValue(CreateUser.class).imageUrl;
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//
-//                            }
-//                        });
-
-//                        if (childDss.child(current_user_id).exists()) {
-//                            Toast.makeText(getApplicationContext(), "abcde", Toast.LENGTH_SHORT).show();
-//
-//                        }
-//                        else {
-
 
                         Query query1 = databaseReference.child("MyJoinedUsers").orderByKey().equalTo(join_user_id);
                         query1.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -133,56 +117,17 @@ public class JoinCircleActivity extends AppCompatActivity {
                                 if(dataSnapshot.getValue() == null){
                                     circleReference = FirebaseDatabase.getInstance().getReference().child("Users")
                                             .child(join_user_id).child("CircleMembers");
+                                    circleReference.keepSynced(true);
 
                                     connectedReference = FirebaseDatabase.getInstance().getReference().child("Users")
                                             .child(current_user_id).child("MyJoinedUsers");
+                                    connectedReference.keepSynced(true);
 
                                     CircleJoin circleJoin = new CircleJoin(current_user_id, joined_name, lat, lng);
                                     // CircleJoin circleJoin1 = new CircleJoin(join_user_id);
                                     final JoinedCircle joinedCircle = new JoinedCircle(join_user_id, connected_username);
 
                                     Log.d("printvalue", databaseReference.toString());
-
-
-//                        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-//                                    if(dataSnapshot1.child(join_user_id).exists()){
-//                                        Toast.makeText(getApplicationContext(), "Silly", Toast.LENGTH_SHORT).show();
-//                                        Log.d("Mad",join_user_id);
-//
-//                                    }
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//
-//                            }
-//                        });
-//                        Query query1 = databaseReference.child("MyJoinedUsers").orderByChild(join_user_id).equalTo(join_user_id);
-//                        query1.addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                if(!dataSnapshot.exists()){
-//                                    Toast.makeText(getApplicationContext(), "User Joined Circle Successfully", Toast.LENGTH_SHORT).show();
-//
-//                                }
-//                                else {
-//                                    Toast.makeText(getApplicationContext(), "Silly", Toast.LENGTH_SHORT).show();
-//
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//
-//                            }
-//                        });
-
-
-                                    //inserting data in circlemembers
                                     Log.d("user ex", user_exists+"");
 
                                     circleReference.child(user.getUid()).setValue(circleJoin)
@@ -191,34 +136,26 @@ public class JoinCircleActivity extends AppCompatActivity {
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
 
+                                                        HashMap<String, String> notification = new HashMap<String, String>();
+                                                        notification.put("from", current_user_id);
+                                                        notification.put("type", "request");
+                                                        Notification.child(join_user_id).push().setValue(notification)
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if(task.isSuccessful()){
+                                                                            CURRENT_STATE =  "request_sent";
+                                                                        }
+                                                                    }
+                                                                });
+
                                                         Toast.makeText(getApplicationContext(), "User Joined Circle Successfully", Toast.LENGTH_SHORT).show();
-//                                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//                                                @Override
-//                                                public void onDataChange(DataSnapshot dataSnapshot) {
-//                                                    for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-//                                                        if(dataSnapshot1.child(join_user_id).exists()){
-//                                                            Toast.makeText(getApplicationContext(), "Silly", Toast.LENGTH_SHORT).show();
-//                                                            Log.d("Mad",join_user_id);
-//                                                            Log.d("Bhos", current_user_id);
-//
-//                                                        }
-//                                                        else {
-//
-//                                                        }
-//                                                    }
-//                                                }
-//
-//                                                @Override
-//                                                public void onCancelled(DatabaseError databaseError) {
-//
-//                                                }
-//                                            });
                                                         connectedReference.child(join_user_id).setValue(joinedCircle)
                                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                         if (task.isSuccessful()) {
-                                                                            Toast.makeText(getApplicationContext(), "updated", Toast.LENGTH_SHORT).show();
+                                                                            Toast.makeText(getApplicationContext(), "User Joined Circle Successfully", Toast.LENGTH_SHORT).show();
 
                                                                         }
                                                                     }
@@ -231,10 +168,10 @@ public class JoinCircleActivity extends AppCompatActivity {
 
                                             });
                                 }else
-                                    {
-                                    Toast.makeText(getApplicationContext(), "user exists", Toast.LENGTH_SHORT).show();
+                                {
+                                    Toast.makeText(getApplicationContext(), "User Already Exists", Toast.LENGTH_SHORT).show();
                                 }
-                               // Toast.makeText(getApplicationContext(), dataSnapshot.toString(), Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(getApplicationContext(), dataSnapshot.toString(), Toast.LENGTH_SHORT).show();
                                 Log.d("Toasty",dataSnapshot.toString());
 
                             }
@@ -248,7 +185,7 @@ public class JoinCircleActivity extends AppCompatActivity {
 
 
 
-                }
+                    }
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Code Invalid", Toast.LENGTH_SHORT).show();
@@ -266,4 +203,5 @@ public class JoinCircleActivity extends AppCompatActivity {
 
 
     }
+
 }

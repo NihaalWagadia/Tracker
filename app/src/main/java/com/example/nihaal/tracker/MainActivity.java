@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> denied_permissions = manager.getStatus().get(0).denied;
 
         if(denied_permissions.isEmpty()){
-            Toast.makeText(getApplicationContext(),"Permissions Enabled, WHOOOOOhu!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Permissions Enabled!", Toast.LENGTH_SHORT).show();
 
         }
     }

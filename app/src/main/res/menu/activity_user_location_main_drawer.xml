@@ -22,10 +22,13 @@
             android:id="@+id/nav_joinedCircle"
             android:title="Joined Circle" />
 
-
         <item
             android:id="@+id/nav_shareLoc"
             android:title="Share Location" />
+
+        <item
+            android:id="@+id/nav_code"
+            android:title="Code"/>
     </group>
 
 </menu>
