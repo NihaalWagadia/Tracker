@@ -48,6 +48,9 @@ public class Login extends AppCompatActivity {
 
                             FirebaseUser user = auth.getCurrentUser();
                             if(user.isEmailVerified()){
+                                Intent intent = new Intent(Login.this, UserLocationMainActivity.class);
+                                startActivity(intent);
+                                finish();
 
                                 String online_user_id = auth.getCurrentUser().getUid();
                                 String device_Token = FirebaseInstanceId.getInstance().getToken();
@@ -56,9 +59,7 @@ public class Login extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void aVoid) {
 
-                                                Intent intent = new Intent(Login.this, UserLocationMainActivity.class);
-                                                startActivity(intent);
-                                                finish();
+
                                             }
                                         });
 

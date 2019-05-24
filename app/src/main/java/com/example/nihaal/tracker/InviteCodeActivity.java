@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -73,8 +74,10 @@ public class InviteCodeActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             //insert values in Real time database
                             user = auth.getCurrentUser();
+//                            String online_user_id = auth.getCurrentUser().getUid();
+//                            String device_Token = FirebaseInstanceId.getInstance().getToken();
 
-                            CreateUser createUser = new CreateUser(name, email, password, code, "false", "na", "na", user.getUid(), "na");
+                            CreateUser createUser = new CreateUser(name, email, password, code, "false", "na", "na", user.getUid(), "na", "na");
 
                             user = auth.getCurrentUser();
                             userId = user.getUid();

@@ -55,8 +55,8 @@ public class JoinedCircleActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        mReference = FirebaseDatabase.getInstance().getReference().child("Users");
-        mReference.keepSynced(true);
+//        mReference = FirebaseDatabase.getInstance().getReference().child("Users");
+//        mReference.keepSynced(true);
 
         mUserReference = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid()).child("MyJoinedUsers");
         mUserReference.keepSynced(true);

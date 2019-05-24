@@ -29,6 +29,11 @@
         <item
             android:id="@+id/nav_code"
             android:title="Code"/>
+
+        <item
+            android:id="@+id/Friend_request"
+            android:title="Friend Request"
+            />
     </group>
 
 </menu>

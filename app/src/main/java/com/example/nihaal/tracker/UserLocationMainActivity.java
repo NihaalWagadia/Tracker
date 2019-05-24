@@ -164,7 +164,7 @@ public class UserLocationMainActivity extends AppCompatActivity
                     t2_currentEmail.setText(current_user_email);
 
 
-                    Log.d("PROOOOOOOO", current_user_email);
+//                    Log.d("PROOOOOOOO", current_user_email);
 
                 }
 
@@ -280,12 +280,15 @@ public class UserLocationMainActivity extends AppCompatActivity
             Intent intent = new Intent(UserLocationMainActivity.this, MyCircleActivity.class);
             startActivity(intent);
 
-        }
-
-        else if(id == R.id.nav_code){
+        } else if (id == R.id.nav_code) {
             Intent intent = new Intent(UserLocationMainActivity.this, MyCode.class);
             startActivity(intent);
+        } else if (id == R.id.Friend_request) {
+
+        Intent intent = new Intent(UserLocationMainActivity.this, FriendRequest.class);
+        startActivity(intent);
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
