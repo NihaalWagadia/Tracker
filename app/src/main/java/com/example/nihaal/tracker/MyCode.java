@@ -2,6 +2,7 @@ package com.example.nihaal.tracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MyCode extends AppCompatActivity {
 
@@ -33,10 +38,43 @@ public class MyCode extends AppCompatActivity {
         auth = (FirebaseAuth) FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
         user = auth.getCurrentUser();
 
+        ProgressDialog dialog = new ProgressDialog(MyCode.this);
+        dialog.setTitle("Processing");
+        dialog.setMessage("New Code Getting Generated...");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.show();
+        long delayInMillis = 4000;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+            }
+        }, delayInMillis);
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         databaseReference.keepSynced(true);
 
+    }
+
+    public void MyCode_back(View v){
+        Intent i = new Intent(MyCode.this, UserLocationMainActivity.class);
+        startActivity(i);
+    }
+
+    public void generate_Code(View v){
+
+            char[] chars = "1234567890".toCharArray();
+            StringBuilder stringBuilder = new StringBuilder();
+            Random random = new Random();
+            for(int i=0; i<6; i++){
+                char c = chars[random.nextInt(chars.length)];
+                stringBuilder.append(c);
+            }
+
+        Log.d("Yele",stringBuilder.toString());
+        databaseReference.child(user.getUid()).child("code").setValue(stringBuilder.toString());
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -52,10 +90,5 @@ public class MyCode extends AppCompatActivity {
             }
         });
 
-    }
-
-    public void MyCode_back(View v){
-        Intent i = new Intent(MyCode.this, UserLocationMainActivity.class);
-        startActivity(i);
     }
 }

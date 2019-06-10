@@ -121,7 +121,6 @@ public class NameActivity extends AppCompatActivity {
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a", Locale.getDefault());
         String date = format1.format(myDate);
         Random random = new Random();
-
         int n  = 100000 + random.nextInt(900000);
         String code = String.valueOf(n);
 

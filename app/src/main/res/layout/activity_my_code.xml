@@ -4,48 +4,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyCode"
-    android:background="#f95a3d">
+    android:background="#f95a3d"
+    tools:context=".MyCode">
 
-        <TextView
-            android:id="@+id/Codeview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="118dp"
-            android:text="XXXXXX"
-            android:textSize="26dp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"/>
+    <TextView
+        android:id="@+id/Codeview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="118dp"
+        android:text="XXXXXX"
+        android:textColor="#FFFFFF"
+        android:textSize="26dp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="205dp"
-            android:gravity="center_horizontal"
-            android:text="Your personal code."
-            android:textStyle="bold"
-            android:textSize="20dp"/>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="205dp"
+        android:gravity="center_horizontal"
+        android:text="Your personal code."
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/button6"
-        android:layout_width="wrap_content"
+        android:layout_width="124dp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/textView"
-        android:layout_alignRight="@+id/textView"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="155dp"
+        android:layout_marginBottom="173dp"
+        android:layout_toEndOf="@+id/Codeview"
         android:background="#fa4545"
+        android:onClick="MyCode_back"
         android:text="Back"
-        android:layout_centerHorizontal="true"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:onClick="MyCode_back"/>
+        android:layout_toRightOf="@+id/Codeview" />
+
+    <Button
+        android:id="@+id/generate_code"
+        android:layout_width="124dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-195dp"
+        android:layout_marginLeft="-195dp"
+        android:layout_marginBottom="170dp"
+        android:layout_toEndOf="@+id/Codeview"
+        android:layout_toRightOf="@+id/Codeview"
+        android:background="#fa4545"
+        android:onClick="generate_Code"
+        android:text="Generate Code"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

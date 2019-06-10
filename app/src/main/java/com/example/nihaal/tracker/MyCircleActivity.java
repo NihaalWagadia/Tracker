@@ -200,13 +200,6 @@ public class MyCircleActivity extends AppCompatActivity {
                         }
                     });
 
-//                    button_back.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            Intent intent = new Intent(MyCircleActivity.this, UserLocationMainActivity.class);
-//                            startActivity(intent);
-//                        }
-//                    });
 
                     }
 
@@ -230,27 +223,6 @@ public class MyCircleActivity extends AppCompatActivity {
 
 
     }
-
-//    public void delete_User(View v){
-//        FirebaseAuth mAuth;
-//        final FirebaseUser mUser;
-//
-//        mAuth = (FirebaseAuth) FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
-//        mUser = mAuth.getCurrentUser();
-//        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(mUser.getUid()).child("CircleMembers");
-//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                ref.child(mUser.getUid()).removeValue();
-//                Log.d("DELETE", String.valueOf(ref.child(mUser.getUid()).removeValue()));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
 
     public static class CommitteeViewolder extends  RecyclerView.ViewHolder
         {

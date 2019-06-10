@@ -22,7 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".FriendRequest"></activity>
 
         <service
             android:name=".FirebaseMessagingService"
@@ -38,10 +37,6 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity
-            android:name=".useless"
-            android:label="@string/title_activity_useless"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Slash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

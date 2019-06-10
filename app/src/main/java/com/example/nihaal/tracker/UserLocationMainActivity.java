@@ -25,6 +25,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.RuntimeRemoteException;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -64,6 +65,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class UserLocationMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,
@@ -75,7 +80,7 @@ public class UserLocationMainActivity extends AppCompatActivity
     GoogleApiClient client;
     LocationRequest request;
     LatLng latLng;
-    DatabaseReference databaseReference, rootRef, pointingRef, all_circle_members;
+    DatabaseReference databaseReference, rootRef, pointingRef, all_circle_members, code_reference, time_refernce;
     FirebaseUser user;
     String current_user_email;
     String current_user_name;
@@ -84,6 +89,7 @@ public class UserLocationMainActivity extends AppCompatActivity
     ImageView iv;
     LocationManager manager;
     int a = 0;
+
     ArrayList<MarkerName> markerNames = new ArrayList<MarkerName>();
 
 
@@ -97,12 +103,15 @@ public class UserLocationMainActivity extends AppCompatActivity
         auth = (FirebaseAuth) FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
         user = auth.getCurrentUser();
 
-//            if(user.getEmail().isEmpty()){
-//                Intent intent = new Intent(UserLocationMainActivity.this, MainActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//            else {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                time_refernce = FirebaseDatabase.getInstance().getReference().child("Users");
+                time_refernce.child(user.getUid()).child("code").setValue("null");
+                time_refernce.keepSynced(true);
+            }
+        }, 20000);
                 all_circle_members = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
                 all_circle_members.keepSynced(true);
                 Query query = all_circle_members.orderByChild("CircleMembers");
@@ -129,7 +138,7 @@ public class UserLocationMainActivity extends AppCompatActivity
 
                     }
                 });
-//            }
+
 
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);
@@ -163,9 +172,6 @@ public class UserLocationMainActivity extends AppCompatActivity
                     t1_currentName.setText(current_user_name);
                     t2_currentEmail.setText(current_user_email);
 
-
-//                    Log.d("PROOOOOOOO", current_user_email);
-
                 }
 
                 @Override
@@ -173,8 +179,6 @@ public class UserLocationMainActivity extends AppCompatActivity
 
                 }
             });
-
-
 
     }
 
@@ -235,11 +239,6 @@ public class UserLocationMainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -281,12 +280,9 @@ public class UserLocationMainActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_code) {
+
             Intent intent = new Intent(UserLocationMainActivity.this, MyCode.class);
             startActivity(intent);
-        } else if (id == R.id.Friend_request) {
-
-        Intent intent = new Intent(UserLocationMainActivity.this, FriendRequest.class);
-        startActivity(intent);
         }
 
 
@@ -294,6 +290,10 @@ public class UserLocationMainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -345,10 +345,6 @@ public class UserLocationMainActivity extends AppCompatActivity
                 }
             }
 
-//                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-//                mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
-
-
             rootRef = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
             rootRef.keepSynced(true);
             rootRef.addValueEventListener(new ValueEventListener() {
@@ -357,8 +353,17 @@ public class UserLocationMainActivity extends AppCompatActivity
                     String latitude = String.valueOf(location.getLatitude());
                     String longitude = String.valueOf(location.getLongitude());
 
-                    rootRef.child("lat").setValue(String.valueOf(latitude));
-                    rootRef.child("lng").setValue(String.valueOf(longitude));
+
+                    new android.os.Handler().postDelayed(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    rootRef.child("lat").setValue(String.valueOf(latitude));
+                                    rootRef.child("lng").setValue(String.valueOf(longitude));
+                                }
+                            },
+                    5000);
+
                 }
 
                 @Override

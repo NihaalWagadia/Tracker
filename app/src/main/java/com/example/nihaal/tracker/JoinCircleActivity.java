@@ -38,13 +38,9 @@ public class JoinCircleActivity extends AppCompatActivity {
     String current_user_id;
     String join_user_id, joined_name, profile_image, lat ,lng;
     String connected_username, connected_imageUrl;
-    DatabaseReference mUserReference, data_refernce_to_show, databaseReference, reference, currentRefernce, Notification;
+    DatabaseReference circleReference, connectedReference, databaseReference, reference, currentRefernce, Notification;
     boolean user_exists = false;
     String CURRENT_STATE = "NO";
-    String NEW_CURRENT_STATE;
-    DatabaseReference FriendRequestReference;
-    String Friend_Request_user_id, Friend_request_connected_username;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +55,6 @@ public class JoinCircleActivity extends AppCompatActivity {
         currentRefernce.keepSynced(true);
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
         databaseReference.keepSynced(true);
-
-        FriendRequestReference = FirebaseDatabase.getInstance().getReference().child("Friend_request");
-
-        NEW_CURRENT_STATE = "not_friends";
-
 
         Notification = FirebaseDatabase.getInstance().getReference().child("Notification");
         Notification.keepSynced(true);
@@ -123,113 +114,62 @@ public class JoinCircleActivity extends AppCompatActivity {
                         query1.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                if(dataSnapshot.getValue() == null)
-                                {
-                                    data_refernce_to_show = FirebaseDatabase.getInstance().getReference().child("Users")
-                                            .child(join_user_id).child("GetDataForRequests");
-                                    data_refernce_to_show.keepSynced(true);
-                                    FriendRequestConst friendRequestConst = new FriendRequestConst(current_user_id, joined_name);
+                                if(dataSnapshot.getValue() == null){
+                                    circleReference = FirebaseDatabase.getInstance().getReference().child("Users")
+                                            .child(join_user_id).child("CircleMembers");
+                                    circleReference.keepSynced(true);
 
-                                    data_refernce_to_show.child(current_user_id).setValue(friendRequestConst)
+                                    connectedReference = FirebaseDatabase.getInstance().getReference().child("Users")
+                                            .child(current_user_id).child("MyJoinedUsers");
+                                    connectedReference.keepSynced(true);
+
+                                    CircleJoin circleJoin = new CircleJoin(current_user_id, joined_name, lat, lng);
+                                    // CircleJoin circleJoin1 = new CircleJoin(join_user_id);
+                                    final JoinedCircle joinedCircle = new JoinedCircle(join_user_id, connected_username);
+
+                                    Log.d("printvalue", databaseReference.toString());
+                                    Log.d("user ex", user_exists+"");
+
+                                    circleReference.child(user.getUid()).setValue(circleJoin)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                    HashMap<String, String> notification = new HashMap<String, String>();
-                                                    notification.put("from", current_user_id);
-                                                    notification.put("type", "request");
-                                                    Notification.child(join_user_id).push().setValue(notification)
-                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                    if(task.isSuccessful()){
-                                                                        Log.d("wait2","wait2");
-                                                                        CURRENT_STATE =  "request_sent";
+                                                    if (task.isSuccessful()) {
+                                                        Log.d("wait1","wait1");
+                                                        Toast.makeText(getApplicationContext(), "User Joined Circle Successfully", Toast.LENGTH_SHORT).show();
+                                                        HashMap<String, String> notification = new HashMap<String, String>();
+                                                        notification.put("from", current_user_id);
+                                                        notification.put("type", "request");
+                                                        Notification.child(join_user_id).push().setValue(notification)
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if(task.isSuccessful()){
+                                                                            Log.d("wait2","wait2");
+                                                                            CURRENT_STATE =  "request_sent";
+                                                                        }
                                                                     }
-                                                                }
-                                                            });
-                                                    if(NEW_CURRENT_STATE == "not_friends") {
-                                                        FriendRequestReference.child(current_user_id).child(join_user_id)
-                                                                .child("request_type").setValue("sent")
+                                                                });
+                                                        connectedReference.child(join_user_id).setValue(joinedCircle)
                                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                         if (task.isSuccessful()) {
-                                                                            FriendRequestReference.child(join_user_id).child(current_user_id)
-                                                                                    .child("request_type").setValue("receiver")
-                                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                        @Override
-                                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                                            if (task.isSuccessful()) {
-                                                                                                NEW_CURRENT_STATE = "request_sent";
+                                                                            Log.d("wait3","wait3");
+                                                                            Toast.makeText(getApplicationContext(), "User Joined Circle Successfully", Toast.LENGTH_SHORT).show();
 
-                                                                                            }
-
-                                                                                        }
-                                                                                    });
                                                                         }
                                                                     }
                                                                 });
+
+
                                                     }
+
                                                 }
+
                                             });
-
-
-
-
-
-//Data to be shown
-//                                        mUserReference = FirebaseDatabase.getInstance().getReference().child("Users");
-//                                        mUserReference.keepSynced(true);
-//                                        mUserReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//                                            @Override
-//                                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                                if (dataSnapshot.exists()) {
-//                                                    CreateUser createUser = null;
-//                                                    for (final DataSnapshot childDss : dataSnapshot.getChildren()) {
-//
-//                                                        createUser = childDss.getValue(CreateUser.class);
-//                                                        Friend_Request_user_id = createUser.userid;
-//                                                        Friend_request_connected_username = createUser.name;
-//
-//
-//
-//                                                    }
-//                                                }
-//                                            }
-//
-//                                            @Override
-//                                            public void onCancelled(DatabaseError databaseError) {
-//
-//                                            }
-//                                        });
-//                                        data_refernce_to_show = FirebaseDatabase.getInstance().getReference().child("Users")
-//                                                .child(current_user_id).child("GetDataForRequests");
-//                                        data_refernce_to_show.keepSynced(true);
-//
-//                                        FriendRequestConst friendRequestConst = new FriendRequestConst(Friend_Request_user_id, Friend_request_connected_username);
-//
-//                                        data_refernce_to_show.child(Friend_Request_user_id).setValue(friendRequestConst)
-//                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                                    @Override
-//                                                    public void onComplete(@NonNull Task<Void> task) {
-//                                                        if (task.isSuccessful()) {
-//                                                            Log.d("Voila", "Volila");
-////                            Log.d("wait3","wait3");
-////                            Toast.makeText(getApplicationContext(), "User Joined Circle Successfully", Toast.LENGTH_SHORT).show();
-//
-//                                                        }
-//                                                    }
-//                                                });
-
-
-
-
-
-
-
-
-
-                                }else{
+                                }else
+                                {
                                     Toast.makeText(getApplicationContext(), "User Already Exists", Toast.LENGTH_SHORT).show();
                                 }
                                 // Toast.makeText(getApplicationContext(), dataSnapshot.toString(), Toast.LENGTH_SHORT).show();
@@ -259,9 +199,6 @@ public class JoinCircleActivity extends AppCompatActivity {
 
             }
         });
-
-
-
 
 
 
